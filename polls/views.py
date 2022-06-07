@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.utils import timezone
+from django.views import generic
 
 class QuestionListView(ListView):
 
@@ -33,9 +34,9 @@ class QuestionDetailView(DetailView):
         context['now'] = timezone.now()
         return context
 
-def results(request, question_id) -> HttpResponse:
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/results.html', {'question': question})
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 def vote(request, question_id) -> HttpResponse:
     question = get_object_or_404(Question, pk=question_id)
